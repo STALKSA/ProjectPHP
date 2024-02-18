@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мини-сайт</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+
+    <div id="orders-container">
+        <!-- Список заказов будет создаваться здесь -->
+    </div>
+
+    <div id="order-detail-container">
+        <!-- Здесь будет отображаться подробная информация о заказе -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var apiBaseUrl = "http://localhost/exam/api.php";
+
+            // Функция для отправки запроса к API
+            function callAPI(url, successCallback, errorCallback) {
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { token: 'VALID_TOKEN' }, // Убедитесь, что здесь указан правильный токен
+                    success: successCallback,
+                    error: errorCallback
+                });
+            }
+
+            // Функция для отображения списка заказов
+            function displayOrders() {
+    var ordersContainer = $('#orders-container');
+    ordersContainer.empty();
+
+    callAPI(apiBaseUrl + "?action=getUnprocessedOrders", function(unprocessedOrders) {
+        console.log(unprocessedOrders); // Добавим вывод в консоль для отладки
+
+        if (Array.isArray(unprocessedOrders)) {
+            unprocessedOrders.forEach(function(order) {
+                var orderElement = $('<div class="order">' +
+                    '<p>Заказ #' + order['order_id'] + '<br>Статус: ' + order['status'] + '<br>' +
+                    '<a href="#" class="order-details-link" data-order-id="' + order['order_id'] + '">Подробнее</a>' +
+                    '</p>' +
+                    '</div>');
+                ordersContainer.append(orderElement);
+            });
+        } else {
+            ordersContainer.append('<p>Ошибка при получении данных: ' + JSON.stringify(unprocessedOrders) + '</p>');
+        }
+    }, function(error) {
+        ordersContainer.append('<p>Ошибка при отправке запроса: ' + JSON.stringify(error) + '</p>');
+    });
+}
+
+            // Функция для отображения подробной информации о заказе
+            function displayOrderDetails(orderId) {
+    var orderDetailContainer = $('#order-detail-container');
+    orderDetailContainer.empty();
+
+    callAPI(apiBaseUrl + "?action=getOrderById&orderId=" + orderId, function(orderDetails) {
+        console.log(orderDetails); // Добавим вывод в консоль для отладки
+
+        if (typeof orderDetails === 'object') {
+            var orderDetailElement = $('<div class="order-detail">' +
+                '<p>Подробности заказа #' + orderDetails['order_id'] + '</p>' +
+                '<p>Товар: ' + (orderDetails['product'] || 'Нет данных') + '</p>' +
+                '<p>Количество: ' + (orderDetails['quantity'] || 'Нет данных') + '</p>' +
+                '</div>');
+            orderDetailContainer.html(orderDetailElement);
+        } else {
+            orderDetailContainer.append('<p>Ошибка при получении данных: ' + JSON.stringify(orderDetails) + '</p>');
+        }
+    }, function(error) {
+        orderDetailContainer.append('<p>Ошибка при отправке запроса: ' + JSON.stringify(error) + '</p>');
+    });
+}
+
+            // Обработчик события клика на ссылке "Подробнее"
+            $(document).on('click', '.order-details-link', function(event) {
+                event.preventDefault();
+                var orderId = $(this).data('order-id');
+                displayOrderDetails(orderId);
+            });
+
+            // Начальное отображение списка заказов
+            displayOrders();
+        });
+    </script>
+
+</body>
+
+</html>
