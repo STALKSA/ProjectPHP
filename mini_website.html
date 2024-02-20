@@ -71,7 +71,8 @@
         if (typeof orderDetails === 'object') {
             var orderDetailElement = $('<div class="order-detail">' +
                 '<p>Подробности заказа #' + orderDetails['order_id'] + '</p>' +
-                '<p>Товар: ' + (orderDetails['product'] || 'Нет данных') + '</p>' +
+                '<p>Заказчик: ' + (orderDetails['customer_name'] || 'Нет данных') + '</p>' +
+                '<p>Товар: ' + (orderDetails['product_name'] || 'Нет данных') + '</p>' +
                 '<p>Количество: ' + (orderDetails['quantity'] || 'Нет данных') + '</p>' +
                 '</div>');
             orderDetailContainer.html(orderDetailElement);

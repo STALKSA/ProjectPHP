@@ -4,6 +4,8 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
+error_log('Actual REMOTE_ADDR: ' . $_SERVER['REMOTE_ADDR']);
+
 $expectedToken = "VALID_TOKEN";
 $receivedToken = isset($_GET['token']) ? $_GET['token'] : '';
 
@@ -14,6 +16,7 @@ if ($receivedToken !== $expectedToken) {
 
 // $allowedIP = "VALID_IP_ADDRESS";
 // $clientIP = $_SERVER['REMOTE_ADDR'];
+
 
 // if ($clientIP !== $allowedIP) {
 //     echo json_encode(['error' => 'Неверный IP-адрес']);
