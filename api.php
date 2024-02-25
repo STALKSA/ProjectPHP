@@ -14,7 +14,7 @@ if ($receivedToken !== $expectedToken) {
     exit;
 }
 
-$conn = new mysqli("127.0.0.1", "root", "root", "exam_db");
+$conn = new mysqli("DB_HOST", "DB_USERNAME", "DB_PASSWORD", "DB_DATABASE");
 
 if ($conn->connect_error) {
     die("Ошибка подключения: " . $conn->connect_error);
