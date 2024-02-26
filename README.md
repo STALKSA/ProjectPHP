@@ -20,4 +20,14 @@
 4. Запустить мини-сайт по адресу http://localhost/exam/mini_website.html
 5. Увидеть отображение списка необработанных заказов с url каждого
 
-## Инструменты для тестирования: 
+## Окружение: 
+
+1. Operating System:
+ - Windows
+2. XAMPP for Windows
+ - Apache 2.4.58
+ - PHP 8.0.30
+ - phpMyAdmin 5.2.1
+ - MySQL
+3. Web Browsers:
+ - Chrome(Версия 122.0.6261.69)
